@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vedabase - Biblioteka Bhagavad-gīty</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <button class="menu-btn" id="menuBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Vedabase</h1>
+                        <p>Biblioteka tekstów védskich</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" placeholder="Szukaj w tekstach, komentarzach..." class="search-input">
+                </div>
+            </div>
+
+            <div class="header-right">
+                <button class="header-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </button>
+                <button class="header-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile search -->
+        <div class="mobile-search">
+            <div class="search-box">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" placeholder="Szukaj..." class="search-input">
+            </div>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-overlay" id="sidebarOverlay"></div>
+            <div class="sidebar-content">
+                <div class="sidebar-header">
+                    <h2>Bhagavad-gīta</h2>
+                    <p>Taka jak jest</p>
+                    <button class="close-btn" id="closeBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="chapters-list" id="chaptersList">
+                    <!-- Chapters will be populated by JavaScript -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-container">
+                <!-- Chapter Header -->
+                <div class="chapter-header">
+                    <div class="chapter-info">
+                        <div class="chapter-title-section">
+                            <div class="chapter-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h1 class="chapter-number">Rozdział <span id="currentChapter">1</span></h1>
+                                <p class="chapter-sanskrit" id="chapterSanskrit">arjuna-viṣāda-yoga</p>
+                            </div>
+                        </div>
+
+                        <div class="chapter-meta">
+                            <div class="meta-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12,6 12,12 16,14"></polyline>
+                                </svg>
+                                <span id="readingTime">15 min</span>
+                            </div>
+                            <div class="meta-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                                </svg>
+                                <span><span id="verseCount">47</span> wersów</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="chapter-title" id="chapterTitle">Przyjmowanie pozycji ucznia</h2>
+                    <p class="chapter-description" id="chapterDescription">
+                        Arjuna widzi armie na polu bitwy Kurukṣetry i pogrąża się w głębokim smutku z powodu perspektywy walki ze swoimi krewnymi i nauczycielami.
+                    </p>
+
+                    <div class="chapter-tags">
+                        <span class="tag tag-orange">Philosophia Perensis</span>
+                        <span class="tag tag-red">Bhakti-yoga</span>
+                        <span class="tag tag-amber">Wiedza transcendentalna</span>
+                    </div>
+                </div>
+
+                <!-- Verse Selector -->
+                <div class="verse-selector">
+                    <div class="verse-controls">
+                        <div class="verse-input-group">
+                            <label for="verseSelect">Wers:</label>
+                            <select id="verseSelect" class="verse-select">
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+
+                        <div class="verse-actions">
+                            <button class="action-btn" title="Odtwórz audio">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                </svg>
+                            </button>
+                            <button class="action-btn" title="Dodaj do zakładek">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                            </button>
+                            <button class="action-btn" title="Udostępnij">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                    <polyline points="16,6 12,2 8,6"></polyline>
+                                    <line x1="12" y1="2" x2="12" y2="15"></line>
+                                </svg>
+                            </button>
+                            <button class="action-btn" title="Kopiuj">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verse Display -->
+                <div class="verse-display">
+                    <div class="verse-header">
+                        <h3 class="verse-title">Tekst <span id="currentVerseNumber">1</span></h3>
+                        <div class="display-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="showTransliteration" checked>
+                                <span>Transliteracja</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="showWordForWord">
+                                <span>Słowo po słowie</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Sanskrit Text -->
+                    <div class="text-section">
+                        <h4 class="section-title">Sanskryt:</h4>
+                        <div class="text-box sanskrit-box">
+                            <p class="sanskrit-text" id="sanskritText">
+                                dhṛtarāṣṭra uvāca<br>
+                                dharma-kṣetre kuru-kṣetre<br>
+                                samavetā yuyutsavaḥ<br>
+                                māmakāḥ pāṇḍavāś caiva<br>
+                                kim akurvata sañjaya
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Transliteration -->
+                    <div class="text-section" id="transliterationSection">
+                        <h4 class="section-title">Transliteracja:</h4>
+                        <div class="text-box transliteration-box">
+                            <p class="transliteration-text" id="transliterationText">
+                                dhṛtarāṣṭra uvāca<br>
+                                dharma-kṣetre kuru-kṣetre<br>
+                                samavetā yuyutsavaḥ<br>
+                                māmakāḥ pāṇḍavāś caiva<br>
+                                kim akurvata sañjaya
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Word for Word -->
+                    <div class="text-section" id="wordForWordSection" style="display: none;">
+                        <h4 class="section-title">Znaczenie słowo po słowie:</h4>
+                        <div class="text-box word-for-word-box">
+                            <p class="word-for-word-text">
+                                <span class="word-item"><strong>dhṛtarāṣṭraḥ uvāca</strong> — Dhṛtarāṣṭra powiedział;</span>
+                                <span class="word-item"><strong>dharma-kṣetre</strong> — na miejscu pielgrzymek;</span>
+                                <span class="word-item"><strong>kuru-kṣetre</strong> — w krainie zwanej Kurukṣetra;</span>
+                                <span class="word-item"><strong>samavetāḥ</strong> — zebrani;</span>
+                                <span class="word-item"><strong>yuyutsavaḥ</strong> — pragnący walczyć;</span>
+                                <span class="word-item"><strong>māmakāḥ</strong> — moi synowie;</span>
+                                <span class="word-item"><strong>pāṇḍavāḥ</strong> — synowie Pāṇḍu;</span>
+                                <span class="word-item"><strong>ca</strong> — i;</span>
+                                <span class="word-item"><strong>eva</strong> — z pewnością;</span>
+                                <span class="word-item"><strong>kim</strong> — co;</span>
+                                <span class="word-item"><strong>akurvata</strong> — czynili;</span>
+                                <span class="word-item"><strong>sañjaya</strong> — o Sañjayo.</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Translation -->
+                    <div class="text-section">
+                        <h4 class="section-title">Tłumaczenie:</h4>
+                        <div class="text-box translation-box">
+                            <p class="translation-text" id="translationText">
+                                Dhṛtarāṣṭra powiedział: O Sañjayo, po zebraniu się na świętym miejscu pielgrzymek w Kurukṣetrze, czego pragnęli moi synowie i synowie Pāṇḍu? Czy rzeczywiście chcieli walczyć?
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Commentary -->
+                    <div class="text-section">
+                        <h4 class="section-title">Komentarz:</h4>
+                        <div class="commentary-content">
+                            <p class="commentary-text">
+                                Bhagavad-gītā jest powszechnie uznawana za sedno wszystkich védskich tekstów. Jej istotę stanowi wiedza o świadomości Kṛṣṇy i można ją zrozumieć dzięki pięciu podstawowym punktom. Te punkty dotyczą: 1) Najwyższego Pana, 2) żywej istoty, 3) natury materialnej, 4) czasu oraz 5) działania. Gītā wyjaśnia również, że Najwyższy Pan (īśvara) jest Kṛṣṇa, żywa istota (jīva) jest Jego wieczną cząstką, natura materialna (prakṛti) jest manifestacją energii Pana, czas (kāla) jest wieczną energią Pana, a działanie (karma) to każda czynność wykonywana przez żywą istotę.
+                            </p>
+                            <p class="commentary-text">
+                                W tym pierwszym wersie Gīty bardzo znaczące jest użycie słowa dharma-kṣetra (miejsce sprawiedliwości, cnoty). Pole bitwy Kurukṣetra jest miejscem świętym od niepamiętnych czasów, nawet przed narodzinami Kuru. Dlatego też Dhṛtarāṣṭra chciał wiedzieć, jaki wpływ będzie miało to święte miejsce na wynik bitwy.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="navigation">
+                    <div class="nav-left">
+                        <button class="nav-btn secondary" id="prevChapterBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="11,19 2,12 11,5 11,19"></polygon>
+                                <polygon points="22,19 13,12 22,5 22,19"></polygon>
+                            </svg>
+                            <span class="nav-text">Poprzedni rozdział</span>
+                        </button>
+                        <button class="nav-btn secondary" id="prevVerseBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15,18 9,12 15,6"></polyline>
+                            </svg>
+                            <span>Poprzedni wers</span>
+                        </button>
+                    </div>
+
+                    <div class="nav-center">
+                        <span class="verse-counter">
+                            Wers <span id="navCurrentVerse">1</span> z <span id="navTotalVerses">47</span>
+                        </span>
+                    </div>
+
+                    <div class="nav-right">
+                        <button class="nav-btn secondary" id="nextVerseBtn">
+                            <span>Następny wers</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9,18 15,12 9,6"></polyline>
+                            </svg>
+                        </button>
+                        <button class="nav-btn secondary" id="nextChapterBtn">
+                            <span class="nav-text">Następny rozdział</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="13,19 22,12 13,5 13,19"></polygon>
+                                <polygon points="2,19 11,12 2,5 2,19"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
