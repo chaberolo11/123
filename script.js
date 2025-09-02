@@ -1,5 +1,27 @@
 // Bhagavad Gita data structure
 const bhagavadGita = {
+    preliminarySections: [
+        {
+            id: "prolog",
+            title: "Prolog",
+            content: "Treść prologu będzie załadowana z Vedabase..."
+        },
+        {
+            id: "dedication",
+            title: "Dedykacja",
+            content: "Treść dedykacji będzie załadowana z Vedabase..."
+        },
+        {
+            id: "preface",
+            title: "Wstęp",
+            content: "Treść wstępu będzie załadowana z Vedabase..."
+        },
+        {
+            id: "introduction",
+            title: "Wprowadzenie",
+            content: "Treść wprowadzenia będzie załadowana z Vedabase..."
+        }
+    ],
     chapters: [
         {
             number: 1,
@@ -164,6 +186,7 @@ const sampleVerses = {
 // Application state
 let currentChapter = 1;
 let currentVerse = 1;
+let currentSection = null; // null for chapters, or section id for preliminary sections
 let expandedChapters = new Set();
 
 // DOM elements
@@ -252,12 +275,47 @@ function closeSidebar() {
 function populateChaptersList() {
     chaptersList.innerHTML = '';
     
+    // Add preliminary sections
+    bhagavadGita.preliminarySections.forEach(section => {
+        const sectionItem = document.createElement('div');
+        sectionItem.className = 'chapter-item';
+        
+        const sectionBtn = document.createElement('button');
+        sectionBtn.className = `chapter-btn ${currentSection === section.id ? 'active' : ''}`;
+        sectionBtn.innerHTML = `
+            <div class="chapter-content">
+                <div class="chapter-meta">
+                    <span class="chapter-number">${section.title}</span>
+                </div>
+                <div class="chapter-name">Tekst wstępny</div>
+            </div>
+        `;
+        
+        sectionBtn.addEventListener('click', () => {
+            selectPreliminarySection(section.id);
+        });
+        
+        sectionItem.appendChild(sectionBtn);
+        chaptersList.appendChild(sectionItem);
+    });
+    
+    // Add separator
+    const separator = document.createElement('div');
+    separator.style.cssText = 'height: 1px; background: #fed7aa; margin: 0.5rem 0.75rem;';
+    chaptersList.appendChild(separator);
+    
     bhagavadGita.chapters.forEach(chapter => {
         const chapterItem = document.createElement('div');
         chapterItem.className = 'chapter-item';
         
         const chapterBtn = document.createElement('button');
         chapterBtn.className = `chapter-btn ${chapter.number === currentChapter ? 'active' : ''}`;
+        // Update active state logic
+        if (currentSection === null && chapter.number === currentChapter) {
+            chapterBtn.className = 'chapter-btn active';
+        } else {
+            chapterBtn.className = 'chapter-btn';
+        }
         chapterBtn.innerHTML = `
             <div class="chapter-content">
                 <div class="chapter-meta">
@@ -324,6 +382,7 @@ function toggleChapterExpansion(chapterNumber) {
 function selectChapter(chapterNumber) {
     currentChapter = chapterNumber;
     currentVerse = 1;
+    currentSection = null; // Clear section when selecting chapter
     updateDisplay();
     populateChaptersList();
     populateVerseSelector();
@@ -333,6 +392,18 @@ function selectChapter(chapterNumber) {
 function selectChapterAndVerse(chapterNumber, verseNumber) {
     currentChapter = chapterNumber;
     currentVerse = verseNumber;
+    currentSection = null; // Clear section when selecting chapter and verse
+    updateDisplay();
+    populateChaptersList();
+    populateVerseSelector();
+    closeSidebar();
+}
+
+// Preliminary section selection
+function selectPreliminarySection(sectionId) {
+    currentSection = sectionId;
+    currentChapter = 1; // Keep chapter 1 as fallback
+    currentVerse = 1;
     updateDisplay();
     populateChaptersList();
     populateVerseSelector();
@@ -358,10 +429,36 @@ function populateVerseSelector() {
 
 // Navigation functions
 function navigateChapter(direction) {
+    // Handle preliminary sections navigation
+    if (currentSection) {
+        const currentSectionIndex = bhagavadGita.preliminarySections.findIndex(s => s.id === currentSection);
+        
+        if (direction === -1) {
+            // Go to previous section
+            if (currentSectionIndex > 0) {
+                selectPreliminarySection(bhagavadGita.preliminarySections[currentSectionIndex - 1].id);
+            }
+        } else {
+            // Go to next section or chapter 1
+            if (currentSectionIndex < bhagavadGita.preliminarySections.length - 1) {
+                selectPreliminarySection(bhagavadGita.preliminarySections[currentSectionIndex + 1].id);
+            } else {
+                selectChapter(1); // Go to chapter 1
+            }
+        }
+        return;
+    }
+    
+    // Handle chapter navigation
     const newChapter = currentChapter + direction;
-    if (newChapter >= 1 && newChapter <= bhagavadGita.chapters.length) {
+    if (direction === -1 && newChapter === 0) {
+        // Go to last preliminary section
+        const lastSection = bhagavadGita.preliminarySections[bhagavadGita.preliminarySections.length - 1];
+        selectPreliminarySection(lastSection.id);
+    } else if (newChapter >= 1 && newChapter <= bhagavadGita.chapters.length) {
         currentChapter = newChapter;
         currentVerse = 1;
+        currentSection = null;
         updateDisplay();
         populateChaptersList();
         populateVerseSelector();
@@ -369,6 +466,11 @@ function navigateChapter(direction) {
 }
 
 function navigateVerse(direction) {
+    // Don't navigate verses in preliminary sections
+    if (currentSection) {
+        return;
+    }
+    
     const chapter = bhagavadGita.chapters.find(ch => ch.number === currentChapter);
     if (!chapter) return;
     
@@ -383,6 +485,15 @@ function navigateVerse(direction) {
 
 // Display functions
 function updateDisplay() {
+    // If we're viewing a preliminary section
+    if (currentSection) {
+        const section = bhagavadGita.preliminarySections.find(s => s.id === currentSection);
+        if (section) {
+            updatePreliminaryDisplay(section);
+            return;
+        }
+    }
+    
     const chapter = bhagavadGita.chapters.find(ch => ch.number === currentChapter);
     if (!chapter) return;
     
@@ -424,6 +535,59 @@ function updateDisplay() {
     
     // Update navigation button states
     updateNavigationButtons();
+}
+
+function updatePreliminaryDisplay(section) {
+    // Update chapter info to show preliminary section
+    currentChapterSpan.textContent = section.title;
+    chapterSanskrit.textContent = "";
+    chapterTitle.textContent = section.title;
+    chapterDescription.textContent = "Tekst wstępny do Bhagavad-gīty";
+    readingTime.textContent = "5 min";
+    verseCount.textContent = "1";
+    
+    // Update verse info
+    currentVerseNumber.textContent = "1";
+    navCurrentVerse.textContent = "1";
+    navTotalVerses.textContent = "1";
+    
+    // Hide Sanskrit and transliteration for preliminary sections
+    sanskritText.innerHTML = "";
+    transliterationText.innerHTML = "";
+    translationText.textContent = section.content;
+    
+    // Hide word for word section
+    const wordForWordText = document.querySelector('.word-for-word-text');
+    if (wordForWordText) {
+        wordForWordText.innerHTML = "";
+    }
+    
+    // Update commentary with note about source
+    const commentaryText = document.querySelector('.commentary-text');
+    if (commentaryText) {
+        commentaryText.innerHTML = `<p>Treść ${section.title.toLowerCase()} została pobrana z oficjalnej strony Vedabase: <a href="https://vedabase.io/pl/library/bg/" target="_blank" style="color: #ea580c; text-decoration: underline;">https://vedabase.io/pl/library/bg/</a></p><p>Pełna treść zostanie załadowana w przyszłych aktualizacjach aplikacji.</p>`;
+    }
+    
+    // Update navigation button states for preliminary sections
+    updatePreliminaryNavigationButtons();
+}
+
+function updatePreliminaryNavigationButtons() {
+    const currentSectionIndex = bhagavadGita.preliminarySections.findIndex(s => s.id === currentSection);
+    
+    // Chapter navigation
+    prevChapterBtn.disabled = currentSectionIndex === 0;
+    nextChapterBtn.disabled = false; // Can always go to next (either next section or chapter 1)
+    
+    // Verse navigation (disabled for preliminary sections)
+    prevVerseBtn.disabled = true;
+    nextVerseBtn.disabled = true;
+    
+    // Update button opacity
+    prevChapterBtn.style.opacity = prevChapterBtn.disabled ? '0.5' : '1';
+    nextChapterBtn.style.opacity = '1';
+    prevVerseBtn.style.opacity = '0.5';
+    nextVerseBtn.style.opacity = '0.5';
 }
 
 function updateNavigationButtons() {
