@@ -1,1 +1,7 @@
-{"code":"rate-limited","message":"You have hit the rate limit. Please upgrade to keep chatting.","providerLimitHit":false,"isRetryable":true}
+// Main application script
+console.log('Application loaded successfully');
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM content loaded');
+});
